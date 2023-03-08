@@ -15690,6 +15690,7 @@ typedef enum {
     QEMU_BLOCK_IOTUNE_SET_GROUP_NAME       = 1 << 5,
     QEMU_BLOCK_IOTUNE_SET_BYTES_MAX_LENGTH = 1 << 6,
     QEMU_BLOCK_IOTUNE_SET_IOPS_MAX_LENGTH  = 1 << 7,
+    QEMU_BLOCK_IOTUNE_SET_QUEUE_ID         = 1 << 8,
 } qemuBlockIoTuneSetFlags;
 
 
@@ -15730,6 +15731,8 @@ qemuDomainSetBlockIoTuneDefaults(virDomainBlockIoTuneInfo *newinfo,
         newinfo->size_iops_sec = oldinfo->size_iops_sec;
     if (!(set_fields & QEMU_BLOCK_IOTUNE_SET_GROUP_NAME))
         newinfo->group_name = g_strdup(oldinfo->group_name);
+    if (!(set_fields & QEMU_BLOCK_IOTUNE_SET_QUEUE_ID))
+        newinfo->queue_id = -1;
 
     /* The length field is handled a bit differently. If not defined/set,
      * QEMU will default these to 0 or 1 depending on whether something in
@@ -15902,6 +15905,8 @@ qemuDomainSetBlockIoTune(virDomainPtr dom,
                                VIR_TYPED_PARAM_ULLONG,
                                VIR_DOMAIN_BLOCK_IOTUNE_WRITE_IOPS_SEC_MAX_LENGTH,
                                VIR_TYPED_PARAM_ULLONG,
+                               VIR_DOMAIN_BLOCK_IOTUNE_QUEUE_ID,
+                               VIR_TYPED_PARAM_INT,
                                NULL) < 0)
         return -1;
 
@@ -15995,6 +16000,8 @@ qemuDomainSetBlockIoTune(virDomainPtr dom,
                          READ_IOPS_SEC_MAX_LENGTH);
         SET_IOTUNE_FIELD(write_iops_sec_max_length, IOPS_MAX_LENGTH,
                          WRITE_IOPS_SEC_MAX_LENGTH);
+
+        SET_IOTUNE_FIELD(queue_id, QUEUE_ID, QUEUE_ID);
     }
 
 #undef SET_IOTUNE_FIELD

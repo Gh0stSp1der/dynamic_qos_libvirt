@@ -4557,6 +4557,15 @@ typedef void (*virConnectDomainEventJobCompletedCallback)(virConnectPtr conn,
 # define VIR_DOMAIN_TUNABLE_BLKDEV_WRITE_IOPS_SEC_MAX_LENGTH "blkdeviotune.write_iops_sec_max_length"
 
 /**
+ * VIR_DOMAIN_TUNABLE_BLKDEV_QUEUE_ID:
+ *
+ * Macro represents the queue ID to indicate virtqueue on virtio device type
+ * for the blkdeviotune.queue_id
+ * as VIR_TYPED_PARAM_INT.
+ */
+# define VIR_DOMAIN_TUNABLE_BLKDEV_QUEUE_ID "blkdeviotune.queue_id"
+
+/**
  * virConnectDomainEventTunableCallback:
  * @conn: connection object
  * @dom: domain on which the event occurred
