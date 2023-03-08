@@ -5048,6 +5048,7 @@ int qemuMonitorJSONSetBlockIoThrottle(qemuMonitor *mon,
                                            "P:iops_max_length", info->total_iops_sec_max_length,
                                            "P:iops_rd_max_length", info->read_iops_sec_max_length,
                                            "P:iops_wr_max_length", info->write_iops_sec_max_length,
+                                           "I:queue_id", info->queue_id,
                                            NULL)))
         return -1;
 
