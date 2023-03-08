@@ -2842,6 +2842,13 @@ int virDomainBlockCommit(virDomainPtr dom, const char *disk, const char *base,
  */
 # define VIR_DOMAIN_BLOCK_IOTUNE_GROUP_NAME "group_name"
 
+/**
+ * VIR_DOMAIN_BLOCK_IOTUNE_QUEUE_ID:
+ * Macro for the BlockIoTune tunable weight: it represents the queue id
+ * inside a block device, as a int.
+ */
+# define VIR_DOMAIN_BLOCK_IOTUNE_QUEUE_ID "queue_id"
+
 int
 virDomainSetBlockIoTune(virDomainPtr dom,
                         const char *disk,

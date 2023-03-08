@@ -1175,6 +1175,14 @@ static const vshCmdOptDef opts_blkdeviotune[] = {
      .completer = virshDomainDiskTargetCompleter,
      .help = N_("block device")
     },
+    {.name = "queue_id",
+     .type = VSH_OT_ALIAS,
+     .help = "queue-id"
+    },
+    {.name = "queue-id",
+     .type = VSH_OT_INT,
+     .help = N_("queue ID to control inside the device (default -1)")
+    },
     {.name = "total_bytes_sec",
      .type = VSH_OT_ALIAS,
      .help = "total-bytes-sec"
@@ -1410,6 +1418,7 @@ cmdBlkdeviotune(vshControl *ctl, const vshCmd *cmd)
     VSH_ADD_IOTUNE(read-iops-sec-max, READ_IOPS_SEC_MAX);
     VSH_ADD_IOTUNE(write-iops-sec-max, WRITE_IOPS_SEC_MAX);
     VSH_ADD_IOTUNE(size-iops-sec, SIZE_IOPS_SEC);
+    VSH_ADD_IOTUNE(queue-id, QUEUE_ID);
 
     VSH_ADD_IOTUNE(total-bytes-sec-max-length, TOTAL_BYTES_SEC_MAX_LENGTH);
     VSH_ADD_IOTUNE(read-bytes-sec-max-length, READ_BYTES_SEC_MAX_LENGTH);
