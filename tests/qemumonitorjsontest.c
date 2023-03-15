@@ -1923,7 +1923,7 @@ testQemuMonitorJSONqemuMonitorJSONSetBlockIoThrottle(const void *opaque)
     if (!(test = qemuMonitorTestNewSchema(xmlopt, data->schema)))
         return -1;
 
-    expectedInfo = (virDomainBlockIoTuneInfo) {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, NULL, 15, 16, 17, 18, 19, 20};
+    expectedInfo = (virDomainBlockIoTuneInfo) {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, NULL, 15, 16, 17, 18, 19, 20, 21};
     expectedInfo.group_name = g_strdup("group14");
 
     if (qemuMonitorTestAddItem(test, "query-block", queryBlockReply) < 0 ||
@@ -1943,6 +1943,7 @@ testQemuMonitorJSONqemuMonitorJSONSetBlockIoThrottle(const void *opaque)
                                      "iops_max_length", "18",
                                      "iops_rd_max_length", "19",
                                      "iops_wr_max_length", "20",
+				     "queue_id", "21",
                                      NULL, NULL) < 0)
         goto cleanup;
 
