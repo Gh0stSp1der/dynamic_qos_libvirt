@@ -1363,6 +1363,7 @@ cmdBlkdeviotune(vshControl *ctl, const vshCmd *cmd)
     unsigned int flags = VIR_DOMAIN_AFFECT_CURRENT;
     size_t i;
     int rv = 0;
+    int queue_id = 0;
     bool current = vshCommandOptBool(cmd, "current");
     bool config = vshCommandOptBool(cmd, "config");
     bool live = vshCommandOptBool(cmd, "live");
@@ -1401,6 +1402,15 @@ cmdBlkdeviotune(vshControl *ctl, const vshCmd *cmd)
     VSH_ADD_IOTUNE_SCALED(write-bytes-sec-max, WRITE_BYTES_SEC_MAX);
 #undef VSH_ADD_IOTUNE_SCALED
 
+    if ((rv = vshCommandOptInt(ctl, cmd, "queue-id", &queue_id)) < 0) {
+        goto interror;
+    } else if (rv > 0) {
+        if (virTypedParamsAddInt(&params, &nparams, &maxparams,
+                             VIR_DOMAIN_BLOCK_IOTUNE_QUEUE_ID,
+			     queue_id) < 0)
+        goto save_error;
+    }
+
 #define VSH_ADD_IOTUNE(PARAM, CONST) \
     if ((rv = vshCommandOptULongLong(ctl, cmd, #PARAM, &value)) < 0) { \
         goto interror; \
@@ -1418,7 +1428,6 @@ cmdBlkdeviotune(vshControl *ctl, const vshCmd *cmd)
     VSH_ADD_IOTUNE(read-iops-sec-max, READ_IOPS_SEC_MAX);
     VSH_ADD_IOTUNE(write-iops-sec-max, WRITE_IOPS_SEC_MAX);
     VSH_ADD_IOTUNE(size-iops-sec, SIZE_IOPS_SEC);
-    VSH_ADD_IOTUNE(queue-id, QUEUE_ID);
 
     VSH_ADD_IOTUNE(total-bytes-sec-max-length, TOTAL_BYTES_SEC_MAX_LENGTH);
     VSH_ADD_IOTUNE(read-bytes-sec-max-length, READ_BYTES_SEC_MAX_LENGTH);

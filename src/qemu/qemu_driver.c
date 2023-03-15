@@ -16001,7 +16001,16 @@ qemuDomainSetBlockIoTune(virDomainPtr dom,
         SET_IOTUNE_FIELD(write_iops_sec_max_length, IOPS_MAX_LENGTH,
                          WRITE_IOPS_SEC_MAX_LENGTH);
 
-        SET_IOTUNE_FIELD(queue_id, QUEUE_ID, QUEUE_ID);
+        if (STREQ(param->field, VIR_DOMAIN_BLOCK_IOTUNE_QUEUE_ID)) {
+            info.queue_id = param->value.i;
+            set_fields |= QEMU_BLOCK_IOTUNE_SET_QUEUE_ID;
+            if (virTypedParamsAddInt(&eventParams, &eventNparams,
+                                        &eventMaxparams,
+                                        VIR_DOMAIN_TUNABLE_BLKDEV_QUEUE_ID,
+                                        param->value.i) < 0)
+                goto endjob;
+            continue;
+        }
     }
 
 #undef SET_IOTUNE_FIELD
